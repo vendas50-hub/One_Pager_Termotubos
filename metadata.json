@@ -1,0 +1,7 @@
+{
+  "name": "Gerador de One Pager",
+  "description": "Ferramenta de Engenharia de Aplicação e Vendas Técnicas da Termotubos. Analisa fit industrial, processos fabris e oportunidades de especificação de produtos.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
