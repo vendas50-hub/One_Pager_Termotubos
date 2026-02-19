@@ -12,6 +12,8 @@ export interface StructuredData {
   icp_type: string; // 'A', 'B', 'C'
   tier: number | string; // 1, 2, 3
   application_hypothesis: string; // Short text about usage
+  suggested_portfolio: string; // 'Ecommerce', 'Nível 1-3', 'Nível 4-5'
+  purchase_frequency: string; // 'Mensal', 'Semestral', 'Pontual'
   id_ref: string; // e.g., '#01'
 }
 
@@ -41,7 +43,6 @@ export class ApiKeyError extends Error {
 // Global declaration for window.aistudio
 declare global {
   interface Window {
-    // Define the AIStudio interface directly within the Window interface
     aistudio?: {
       hasSelectedApiKey: () => Promise<boolean>;
       openSelectKey: () => Promise<void>;

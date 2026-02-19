@@ -19,16 +19,15 @@ export const generateSalesAnalysis = async (companyName: string, nextId: string)
 
       ---
 
-      **🕵️‍♂️ PROTOCOLO DE INVESTIGAÇÃO (O que você deve fazer):**
+      **🕵️‍♂️ PROTOCOLO DE INVESTIGAÇÃO & REGRAS DE NEGÓCIO:**
 
       **PASSO 1: GOOGLE SEARCH PROFUNDO (Técnico + Negócio)**
       Ao receber o nome de uma empresa: "${companyName}", você deve investigar:
       1.  **O que eles fabricam/fazem?** Busque produtos, catálogo e "quem somos".
       2.  **Sinais de Consumo (Fit Técnico):** Procure palavras-chave como: "Fabricação de máquinas", "Montagem de painéis", "Instalação elétrica", "Manutenção de frota", "Chicotes".
-      3.  **Dados de Porte (Firmographics):** Busque número de funcionários, unidades fabris e presença no mercado (para definir o volume potencial).
+      3.  **Dados de Porte (Firmographics):** Busque número de funcionários, unidades fabris e presença no mercado.
 
       **PASSO 2: CLASSIFICAÇÃO PELA METODOLOGIA (Cruzamento de Dados)**
-      Use os dados coletados para categorizar a empresa:
 
       * **MATRIZ DE ICP (Tipo de Uso):**
           * **ICP A - Reposição (Ouro):** Produção contínua ou Manutenção frequente. (Ex: Montadoras, Linha Branca).
@@ -36,9 +35,14 @@ export const generateSalesAnalysis = async (companyName: string, nextId: string)
           * **ICP C - Revenda/Pontual:** Comércio ou uso irrelevante.
 
       * **MATRIZ DE TIER (Prioridade = Fit + Porte):**
-          * **TIER 1 (Alta Prioridade):** Grande Porte (Enterprise) + ICP A ou B.
-          * **TIER 2 (Média):** Médio Porte (Mid-Market) ou Pequena com ICP A (Recorrente).
+          * **TIER 1 (Alta Prioridade):** Alta capacidade de contratos recorrentes e previsibilidade de demanda.
+          * **TIER 2 (Média):** Médio Porte ou Pequena com ICP A (Recorrente).
           * **TIER 3 (Baixa):** Pequenas empresas sem recorrência ou Baixo Fit.
+
+      * **DIRECIONAMENTO DE CARTEIRA (Roteamento Interno):**
+          * **Ecommerce:** Clientes menores, revendas, compras pontuais ou baixo potencial de recorrência (Geralmente Tier 3 ou ICP C).
+          * **Carteira Nível 4 e 5 (Inside Sales):** Clientes médios, manutenção de rotina, compras recorrentes de menor ticket ou Tier 2.
+          * **Carteira Nível 1, 2 e 3 (Key Accounts):** Grandes contas, alto potencial de volume, contratos globais, Tier 1.
 
       ---
 
@@ -60,17 +64,20 @@ export const generateSalesAnalysis = async (companyName: string, nextId: string)
       * **ICP:** [ICP A / B / C]
       * **Persona Provável:** [Baleia Técnica (Engenharia) / Comprador Operacional / Price-Driven]
       * **TIER FINAL:** [1 / 2 / 3]
-          * *Justificativa:* (Ex: "Tier 1 pois é uma gigante do setor agrícola (Volume) com linha de montagem própria (Recorrência)").
 
       **4. ⚔️ Plano de Abordagem (SDR)**
       * **Dor Latente:** (Ex: "Parada de linha" ou "Risco de reprovação técnica em obra").
       * **Gancho de Venda:** (Uma notícia recente ou projeto citado no site para quebrar o gelo).
-      * **Pergunta de Validação (Do Manual):**
-          * *(Se ICP A):* "Vocês operam com estoque de segurança para a linha ou compram sob demanda?"
-          * *(Se ICP B):* "Esse material entra em produção contínua ou é para um projeto específico?"
-      * **Microcompromisso:** (Ex: "Solicitar envio de amostra para homologação").
+      * **Pergunta de Validação:** (Uma pergunta técnica para qualificar o lead).
 
-      **5. 💾 Dados Estruturados (JSON para CRM)**
+      **5. 🧭 Direcionamento & Previsibilidade (Sales Ops)**
+      * **Roteamento Sugerido:** [Ecommerce / Carteira Nível 4-5 / Carteira Nível 1-3]
+          * *Justificativa:* (Ex: "Redirecionar para Carteira Nível 2 pois possui 3 fábricas e demanda constante de manutenção").
+      * **Perfil de Consumo:** (Recorrente / Sazonal / Pontual).
+      * **Tempo Médio de Compra (Estimado):** (Ex: "Mensal (Produção Contínua)" ou "Trimestral (Por Lote)").
+      * **Média de Consumo:** (Baixa / Média / Alta).
+
+      **6. 💾 Dados Técnicos (JSON Oculto)**
       Gere um bloco JSON estrito. NÃO use markdown dentro do JSON.
       \`\`\`json
       {
@@ -80,6 +87,8 @@ export const generateSalesAnalysis = async (companyName: string, nextId: string)
         "icp_type": "A/B/C",
         "tier": 1,
         "application_hypothesis": "Texto curto sobre uso",
+        "suggested_portfolio": "Ecommerce, Nível 1-3 ou Nível 4-5",
+        "purchase_frequency": "Mensal/Trimestral/Pontual",
         "id_ref": "#${nextId}"
       }
       \`\`\`
