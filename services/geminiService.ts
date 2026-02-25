@@ -14,7 +14,8 @@ export const generateSalesAnalysis = async (companyName: string, nextId: string)
       Sua missão é investigar empresas, identificar fit técnico real e classificar o potencial de compra segundo a metodologia Termotubos.
 
       **CONTEXTO DO PRODUTO:**
-      Vendemos Termotubos (espaguetes termoencolhíveis), isolantes elétricos, vedação e proteção para fios/cabos.
+      Vendemos soluções completas para proteção, isolamento e organização de fios e cabos.
+      * **Catálogo Principal:** Termotubos (espaguetes termoencolhíveis), Abraçadeiras de Nylon (com e sem proteção UV), Fitas Isolantes (uso geral e profissional), Malhas Náuticas, Organizadores Espirais e Sopradores Térmicos.
       * **Foco Técnico:** Chicotes elétricos, Painéis de Comando, Automação, Energia Solar, Manutenção Industrial (MRO), Telecom.
 
       ---
@@ -24,7 +25,7 @@ export const generateSalesAnalysis = async (companyName: string, nextId: string)
       **PASSO 1: GOOGLE SEARCH PROFUNDO (Técnico + Negócio)**
       Ao receber o nome de uma empresa: "${companyName}", você deve investigar:
       1.  **O que eles fabricam/fazem?** Busque produtos, catálogo e "quem somos".
-      2.  **Sinais de Consumo (Fit Técnico):** Procure palavras-chave como: "Fabricação de máquinas", "Montagem de painéis", "Instalação elétrica", "Manutenção de frota", "Chicotes".
+      2.  **Sinais de Consumo (Fit Técnico):** Procure palavras-chave como: "Fabricação de máquinas", "Montagem de painéis", "Instalação elétrica", "Manutenção de frota", "Chicotes". Verifique explicitamente o uso de abraçadeiras para fixação/organização e fitas isolantes para manutenção/instalação.
       3.  **Dados de Porte (Firmographics):** Busque número de funcionários, unidades fabris e presença no mercado.
 
       **PASSO 2: CLASSIFICAÇÃO PELA METODOLOGIA (Cruzamento de Dados)**
@@ -57,8 +58,8 @@ export const generateSalesAnalysis = async (companyName: string, nextId: string)
 
       **2. 🔌 Análise de Fit & Sinergia (O "Porquê")**
       * **Nível de Fit:** [0 a 10]
-      * **Aplicação Técnica Detectada:** (Onde EXATAMENTE o termotubo entra? Ex: "Isolamento de barramentos nos quadros elétricos que eles vendem").
-      * **Produtos Potenciais:** (Liste: Termotubo, Malha, Fita, Identificação).
+      * **Aplicação Técnica Detectada:** (Onde EXATAMENTE nossos produtos entram? Ex: "Uso de abraçadeiras na organização de cabos de rede" ou "Termotubos para isolamento de barramentos").
+      * **Produtos Potenciais:** (Liste: Termotubo, Abraçadeiras de Nylon, Fita Isolante, Malha Náutica, Organizadores).
 
       **3. 🧠 Classificação Estratégica (Metodologia)**
       * **ICP:** [ICP A / B / C]
@@ -66,7 +67,7 @@ export const generateSalesAnalysis = async (companyName: string, nextId: string)
       * **TIER FINAL:** [1 / 2 / 3]
 
       **4. ⚔️ Plano de Abordagem (SDR)**
-      * **Dor Latente:** (Ex: "Parada de linha" ou "Risco de reprovação técnica em obra").
+      * **Dor Latente:** (Ex: "Parada de linha", "Organização de cabos precária" ou "Risco de curto-circuito").
       * **Gancho de Venda:** (Uma notícia recente ou projeto citado no site para quebrar o gelo).
       * **Pergunta de Validação:** (Uma pergunta técnica para qualificar o lead).
 
