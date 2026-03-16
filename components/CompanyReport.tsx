@@ -1,22 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { AnalysisResult } from '../types';
 import { FileText, ExternalLink, Target, CheckCircle2 } from 'lucide-react';
 
 interface CompanyReportProps {
   data: AnalysisResult;
+  onUpdate: (newInfo: string) => Promise<void>;
+  isUpdating: boolean;
 }
 
-export const CompanyReport: React.FC<CompanyReportProps> = ({ data }) => {
+export const CompanyReport: React.FC<CompanyReportProps> = ({ data, onUpdate, isUpdating }) => {
+  const [fieldInfo, setFieldInfo] = useState('');
+
+  const handleUpdateClick = async () => {
+    if (!fieldInfo.trim() || isUpdating) return;
+    await onUpdate(fieldInfo);
+    setFieldInfo('');
+  };
+
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
       
       {/* Left Column: Summary Card */}
       <div className="lg:col-span-3 space-y-6">
         <div className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl">
-          <div className="border-b border-slate-700 bg-slate-800/50 px-6 py-4 flex items-center gap-2">
-            <FileText className="text-blue-400 h-5 w-5" />
-            <h3 className="font-semibold text-white">Relatório Técnico</h3>
+          <div className="border-b border-slate-700 bg-slate-800/50 px-6 py-4 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <FileText className="text-blue-400 h-5 w-5" />
+              <h3 className="font-semibold text-white">Relatório Técnico</h3>
+            </div>
+
+            {/* Field Update Input Group */}
+            <div className="flex items-center gap-2 flex-1 max-w-md">
+              <input
+                type="text"
+                value={fieldInfo}
+                onChange={(e) => setFieldInfo(e.target.value)}
+                placeholder="Descobriu algo novo? (Ex: Não fazem mais painéis)"
+                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-xs text-slate-200 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                disabled={isUpdating}
+              />
+              <button
+                onClick={handleUpdateClick}
+                disabled={!fieldInfo.trim() || isUpdating}
+                className="shrink-0 rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed border border-slate-700"
+              >
+                {isUpdating ? 'Atualizando...' : 'Atualizar Dados'}
+              </button>
+            </div>
           </div>
           
           <div className="prose prose-invert max-w-none p-6 sm:p-8">

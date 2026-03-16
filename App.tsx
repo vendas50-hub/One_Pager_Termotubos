@@ -4,13 +4,14 @@ import { CompanyReport } from './components/CompanyReport';
 import { SearchInput } from './components/SearchInput';
 import { LoadingState } from './components/LoadingState';
 import { SessionHistory } from './components/SessionHistory';
-import { generateSalesAnalysis } from './services/geminiService';
+import { generateSalesAnalysis, updateSalesAnalysis } from './services/geminiService';
 import { fetchHistory, saveReport } from './services/historyService';
 import { AnalysisResult, ApiKeyError } from './types';
 import { ApiKeyPrompt } from './components/ApiKeyPrompt';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [history, setHistory] = useState<AnalysisResult[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -121,6 +122,45 @@ const App: React.FC = () => {
     }
   };
 
+  const handleUpdate = async (newInfo: string) => {
+    if (!result) return;
+    
+    setIsUpdating(true);
+    setError(null);
+
+    try {
+      const updatedData = await updateSalesAnalysis(result, newInfo);
+      
+      // Save updated report to Supabase
+      const savedRecord = await saveReport(updatedData);
+      
+      const finalData = {
+        ...updatedData,
+        id: `#${String(savedRecord.id).padStart(2, '0')}`
+      };
+
+      setResult(finalData);
+      
+      // Update history
+      setHistory(prev => {
+        const filtered = prev.filter(h => h.companyName !== finalData.companyName);
+        return [finalData, ...filtered];
+      });
+
+    } catch (err) {
+      if (err instanceof ApiKeyError) {
+        setError(err.message);
+        setApiKeySelected(false);
+        setShowApiKeyPrompt(true);
+      } else {
+        setError(err instanceof Error ? err.message : "Ocorreu um erro ao atualizar a análise.");
+      }
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   const handleRecall = (item: AnalysisResult) => {
     setResult(item);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -201,7 +241,11 @@ const App: React.FC = () => {
 
           {result && !loading && (
             <div className="animate-fade-in-up">
-              <CompanyReport data={result} />
+              <CompanyReport 
+                data={result} 
+                onUpdate={handleUpdate} 
+                isUpdating={isUpdating} 
+              />
             </div>
           )}
 

@@ -144,3 +144,54 @@ export const generateSalesAnalysis = async (companyName: string, nextId: string)
     throw new Error("Falha ao processar análise. Verifique a API Key.");
   }
 };
+
+export const updateSalesAnalysis = async (currentAnalysis: AnalysisResult, newFieldInfo: string): Promise<AnalysisResult> => {
+  try {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const modelId = 'gemini-3-flash-preview';
+
+    const prompt = `
+      O usuário obteve uma nova informação de campo sobre a empresa que estamos analisando: [${newFieldInfo}].
+      
+      Contexto atual da empresa:
+      ${currentAnalysis.markdownContent}
+
+      Com base apenas nessa nova informação, reavalie a empresa, recalcule o Fit Score, atualize o ICP, Persona e Tier se necessário, e reescreva todo o One Pager atualizado no mesmo formato Markdown/JSON padrão.
+    `;
+
+    const response = await ai.models.generateContent({
+      model: modelId,
+      contents: prompt,
+      config: {
+        responseMimeType: "text/plain",
+      },
+    });
+
+    const text = response.text || "Não foi possível atualizar a análise. Tente novamente.";
+    
+    // Extract JSON block
+    let structuredData: StructuredData | undefined;
+    const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/);
+    
+    if (jsonMatch && jsonMatch[1]) {
+      try {
+        structuredData = JSON.parse(jsonMatch[1]);
+      } catch (e) {
+        console.warn("Failed to parse JSON from response", e);
+      }
+    }
+
+    return {
+      ...currentAnalysis,
+      markdownContent: text,
+      structuredData
+    };
+
+  } catch (error: any) {
+    console.error("Gemini API Update Error:", error);
+    if (error.error?.code === 429 && error.error?.status === "RESOURCE_EXHAUSTED") {
+      throw new ApiKeyError("Você excedeu sua cota atual. Por favor, selecione uma chave API paga.");
+    }
+    throw new Error("Falha ao atualizar análise. Verifique a API Key.");
+  }
+};
